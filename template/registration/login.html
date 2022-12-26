@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Saytga kirish{% endblock title %}
+
+{% block content %}
+
+<div class="mt-5 pt-5">
+    <div class="col-6 offset-3">
+        <h4 class="px-2 py-1"><b>Saytga kirish</b></h4>
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="mb-3">
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                <label class="form-check-label" for="dropdownCheck">
+                  Eslab qolish
+                </label>
+              </div>
+            </div>
+            <button class="btn btn-success ml-2" type="submit">Kirish</button>
+<!--            <a class="btn btn-outline-danger" href="{% url 'password_reset'  %}" role="button">Parolingiz esdan chiqdimi?</a>-->
+        </form>
+
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'signup' %}">Yangi foydalanuvchimisiz? Ro'yxatdan o'tish</a>
+          <a class="dropdown-item" href="{% url 'password_reset'  %}">Parolni unutdingizmi?</a>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
