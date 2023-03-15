@@ -1,10 +1,10 @@
 {% load static %}
 {% load card_template_tags %}
 
-{% block extrahead %}
+{% block extra_head %}
     <script>window.CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/';</script>
     {{ block.super }}
-{% endblock %}
+{% endblock extra_head %}
 
 
 <!doctype html>
@@ -79,11 +79,11 @@
 
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
+          <!-- <li class="nav-item active">
             <a class="nav-link waves-effect" href="/category/0/page/1/">Bosh sahifa
               <span class="sr-only">(current)</span>
             </a>
-          </li>
+          </li> -->
           <li class="nav-item">
             <a class="nav-link waves-effect" href="">Yangiliklar</a>
           </li>
