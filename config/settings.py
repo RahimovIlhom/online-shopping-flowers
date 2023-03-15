@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     #tashqi apps
     'crispy_forms',
+    'crispy_bootstrap5',
     'ckeditor',
     'ckeditor_uploader',
     'django_countries',
@@ -156,7 +157,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_HOST_PASSWORD = 'password'
 # EMAIL_PORT = 587
 
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 
 # CKEDITOR CONFIGS
