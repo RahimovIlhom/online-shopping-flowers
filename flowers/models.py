@@ -104,6 +104,12 @@ class Order(models.Model):
     def __str__(self):
         return f'{self.user}'
 
+    def get_total_price(self):
+        total = 0
+        for order_product in self.products.all():
+            total += order_product.get_final_price()
+        return total
+
     def get_total(self):
         total = 0
         for order_product in self.products.all():

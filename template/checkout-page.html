@@ -169,8 +169,8 @@
               </div>
                 {% if order.promocode.discount_cash %}
                     <span class="text-success">${{ order.promocode.discount_cash }}</span>
-                {% else %}
-                    <span class="text-success">-{{ order.promocode.discount_interest }}%</span>
+                {% elif order.promocode.discount_interest %}
+                    <span class="text-success">{{ order.promocode.discount_interest }}%</span>
                 {% endif %}
             </li>
             <li class="list-group-item d-flex justify-content-between">

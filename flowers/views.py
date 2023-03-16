@@ -211,16 +211,26 @@ class CheckOutView(View):
             elif form_promocode.is_valid():
                 promo_code = form_promocode.cleaned_data.get('promocode')
                 order.promo_code_text = promo_code
-                promocode = PromoCode.objects.all()[:]
-                for promo in promocode:
-                    if promo_code == promo.promocode:
-                        promocode_get = PromoCode.objects.get(promocode=self.request.POST['promocode'])
-                        order.promocode = promocode_get
                 order.save()
-                messages.warning(self.request, "Siz promocode kiritdingiz!")
-                return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
-                    # messages.warning(self.request, "Hozirda hech qanday promo code mavjud emas!")
-                    # return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
+                promocode = PromoCode.objects.all()[:]
+                if promocode:
+                    available = False
+                    for promo in promocode:
+                        if promo_code == promo.promocode:
+                            promocode_get = PromoCode.objects.get(promocode=self.request.POST['promocode'])
+                            order.promocode = promocode_get
+                            if order.get_total_price() >= promo.min_price:
+                                order.save()
+                                messages.warning(self.request, "Siz promokodni to'g'ri kiritdingiz!")
+                                return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
+                            else:
+                                messages.warning(self.request, f"Xaridingiz ${promo.min_price} dan ko'p bo'lishi kerak!")
+                                return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
+                    messages.warning(self.request, "Siz noto'g'ri promokod kiritdingiz!")
+                    return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
+                else:
+                    messages.warning(self.request, "Hozirda hech qanday promo code mavjud emas!")
+                    return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
 
 
             messages.warning(self.request, "Failed Checkout")
