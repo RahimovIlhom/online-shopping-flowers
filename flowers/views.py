@@ -1,3 +1,4 @@
+from random import sample
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -51,8 +52,13 @@ def flowers_list(request, id, page):
 
 
 def flower_page(request, id):
+    flower = get_object_or_404(Product, id=id)
+    category = flower.category
+    three_objects = Product.objects.order_by('?')[:4]
+    # three = sample(three_objects, 3)
     context = {
-        'flower': get_object_or_404(Product, id=id),
+        'flower': flower,
+        'three_objects': three_objects,
     }
 
     return render(request, 'product-page.html', context)
@@ -159,8 +165,13 @@ class OrderSummaryView(LoginRequiredMixin, View):
 class CheckOutView(View):
     def get(self, *args, **kwargs):
         form = CheckOutForm()
+        order = get_object_or_404(Order, user=self.request.user, ordered=False)
+        order_product = order.products.all()
+        n = len(order_product)
         context = {
             "form": form,
+            'order': order,
+            'n': n,
         }
         return render(self.request, 'checkout-page.html', context)
 

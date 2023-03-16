@@ -42,7 +42,7 @@
         <div class="col-lg-4 col-md-6 mb-4">
           <div class="card">
             <div class="view overlay">
-                    <img src="/media/{{ flower.image }}" height="350" class="card-img-top"
+                    <img src="/media/{{ flower.image }}" height="300" class="card-img-top"
                       alt="{{ flower.name }}">
                     <a href="#">
                       <div class="mask rgba-white-slight" ></div>
@@ -128,29 +128,21 @@
             <!--Grid row-->
       <div class="row wow fadeIn">
 
+        {% for flower in three_objects%}
         <!--Grid column-->
-        <div class="col-lg-4 col-md-12 mb-4">
+        <div class="col-lg-3 col-md-12 mb-4">
 
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="">
+          <div class="view overlay">
+                    <img src="/media/{{ flower.image }}" height="250" class="card-img-top"
+                      alt="{{ flower.name }}">
+                    <a href="{% url 'product' flower.id %}">
+                      <div class="mask rgba-white-slight" ></div>
+                    </a>
+            </div>
 
         </div>
         <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
+        {% endfor %}
 
       </div>
       <!--Grid row-->
