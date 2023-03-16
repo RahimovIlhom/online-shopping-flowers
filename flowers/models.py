@@ -127,5 +127,11 @@ class Payment(models.Model):
     def __str__(self):
         return self.user.username
 
-# class PromoCode(models.Model):
-#
+class PromoCode(models.Model):
+    promocode = models.CharField(max_length=20)
+    min_price = models.IntegerField()
+    discount_cash = models.IntegerField(null=True, blank=True)
+    discount_interest = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return self.promocode
