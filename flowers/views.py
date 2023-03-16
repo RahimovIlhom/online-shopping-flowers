@@ -165,11 +165,13 @@ class OrderSummaryView(LoginRequiredMixin, View):
 class CheckOutView(View):
     def get(self, *args, **kwargs):
         form = CheckOutForm()
+        form_promocode = PromoCodeForm()
         order = get_object_or_404(Order, user=self.request.user, ordered=False)
         order_product = order.products.all()
         n = len(order_product)
         context = {
             "form": form,
+            'form_promocode': form_promocode,
             'order': order,
             'n': n,
         }
@@ -177,6 +179,7 @@ class CheckOutView(View):
 
     def post(self, *args, **kwargs):
         form = CheckOutForm(self.request.POST or None)
+        form_promocode = PromoCodeForm(self.request.POST or None)
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
             if form.is_valid():
@@ -204,26 +207,49 @@ class CheckOutView(View):
                 else:
                     messages.warning(self.request, 'Invalid payment option selected')
                     return redirect("checkout")
+
+            elif form_promocode.is_valid():
+                promo_code = form_promocode.cleaned_data.get('promocode')
+                order.promo_code_text = promo_code
+                promocode = PromoCode.objects.all()[:]
+                for promo in promocode:
+                    if promo_code == promo.promocode:
+                        promocode_get = PromoCode.objects.get(promocode=self.request.POST['promocode'])
+                        order.promocode = promocode_get
+                order.save()
+                messages.warning(self.request, "Siz promocode kiritdingiz!")
+                return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
+                    # messages.warning(self.request, "Hozirda hech qanday promo code mavjud emas!")
+                    # return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
+
+
             messages.warning(self.request, "Failed Checkout")
             return redirect("checkout")
+
         except ObjectDoesNotExist:
             messages.error(self.request, "Savatingiz bo'sh, mahsulot tanlab uni qo'shing!", extra_tags='danger')
             return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
 
-def add_promo_code(request):
-    form = PromoCodeForm(request.POST or None)
-    order = get_object_or_404(Order, request.user)
-    promo_code = ''
-    if form.is_valid():
-        promo_code = form.cleaned_data.get('promocode')
-        order.promo_code_text = promo_code
-    promocode = get_object_or_404(PromoCode)
-    for promo in promocode:
-        if promo_code == promo.promocode:
-            order.promocode = promocode
-    order.save()
-    messages.warning(request, "Siz promocode kiritdingiz!")
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+# def add_promo_code(request):
+#     form_promocode = PromoCodeForm(request.POST or None)
+#     order = get_object_or_404(Order, user=request.user)
+#     promo_code = ''
+#     if form_promocode.is_valid():
+#         promo_code = form_promocode.cleaned_data.get('promocode')
+#         order.promo_code_text = promo_code
+#     try:
+#         promocode = get_object_or_404(PromoCode)[:]
+#         for promo in promocode:
+#             if promo_code == promo.promocode:
+#                 order.promocode = promocode
+#         order.save()
+#         messages.warning(request, "Siz promocode kiritdingiz!")
+#         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+#     except:
+#         messages.warning(request, "Siz promocode kiritdingiz!")
+#         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 class PaymentView(View):
     def get(self, *args, **kwargs):

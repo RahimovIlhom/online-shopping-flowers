@@ -137,7 +137,7 @@ class Payment(models.Model):
 
 class PromoCode(models.Model):
     promocode = models.CharField(max_length=20)
-    min_price = models.IntegerField()
+    min_price = models.IntegerField(blank=True, null=True)
     discount_cash = models.IntegerField(null=True, blank=True)
     discount_interest = models.IntegerField(null=True, blank=True)
 

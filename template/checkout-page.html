@@ -16,7 +16,7 @@
 </svg>
 
 
-<div class="mt-4 pt-4">
+<div class="mt-5 pt-4">
   {% if messages %}
   <ul class="messages">
       {% for message in messages %}
@@ -32,7 +32,7 @@
   </div>
 
   <!--Main layout-->
-  <main class="mt-1 pt-1">
+  <main class="mt-0 pt-0">
     <div class="container wow fadeIn">
 
       <!-- Heading -->
@@ -178,11 +178,12 @@
 
           <!-- Promo code -->
           <form method="post" class="card p-2">
+              {% csrf_token %}
             <div class="input-group">
-                {% form.promocode %}
-<!--              <input type="text" class="form-control" placeholder="Promo code" aria-label="Recipient's username" aria-describedby="basic-addon2">-->
+                {{ form_promocode.as_p }}
+<!--              <input type="text" name="{{ form_promocode.promocode }}" class="form-control" placeholder="Promo code" aria-label="Recipient's username" aria-describedby="basic-addon2">-->
               <div class="input-group-append">
-                <a href="{{ url 'promo-code' }}" class="btn btn-secondary btn-md waves-effect m-0">Redeem</a>
+                  <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">Redeem</button>
               </div>
             </div>
           </form>
