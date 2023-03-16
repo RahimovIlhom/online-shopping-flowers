@@ -3,7 +3,7 @@ from .views import (
     flowers_list, CheckOutView, flower_page,
     redirect_login, add_to_card, remove_from_card,
     OrderSummaryView, remove_single_flower_from_card,
-    PaymentView,
+    PaymentView, add_promo_code,
 )
 
 urlpatterns = [
@@ -15,5 +15,6 @@ urlpatterns = [
     path('flower/remove-flower-from-card/<int:id>/', remove_single_flower_from_card, name='remove-flower-from-card'),
     path('order-summary', OrderSummaryView.as_view(), name='order-summary'),
     path('checkout/', CheckOutView.as_view(), name='checkout'),
+    path('checkout/add-promo-code/', add_promo_code, name='promo-code'),
     path('payment/<payment_option>/', PaymentView.as_view(), name='payment'),
 ]

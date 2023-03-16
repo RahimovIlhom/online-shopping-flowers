@@ -10,8 +10,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.views.generic import DetailView, View
 
-from .forms import CheckOutForm
-from .models import Product, Category, OrderProduct, Order, BillingAddress, Payment
+from .forms import CheckOutForm, PromoCodeForm
+from .models import Product, Category, OrderProduct, Order, BillingAddress, Payment, PromoCode
 
 import stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -209,6 +209,21 @@ class CheckOutView(View):
         except ObjectDoesNotExist:
             messages.error(self.request, "Savatingiz bo'sh, mahsulot tanlab uni qo'shing!", extra_tags='danger')
             return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
+
+def add_promo_code(request):
+    form = PromoCodeForm(request.POST or None)
+    order = get_object_or_404(Order, request.user)
+    promo_code = ''
+    if form.is_valid():
+        promo_code = form.cleaned_data.get('promocode')
+        order.promo_code_text = promo_code
+    promocode = get_object_or_404(PromoCode)
+    for promo in promocode:
+        if promo_code == promo.promocode:
+            order.promocode = promocode
+    order.save()
+    messages.warning(request, "Siz promocode kiritdingiz!")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 class PaymentView(View):
     def get(self, *args, **kwargs):

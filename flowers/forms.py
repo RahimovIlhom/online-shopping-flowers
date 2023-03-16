@@ -25,3 +25,6 @@ class CheckOutForm(forms.Form):
     same_shipping_address = forms.BooleanField(required=False)
     save_info = forms.BooleanField(required=False)
     payment_option = forms.ChoiceField(widget=forms.RadioSelect, choices=PAYMENT_CHOISE)
+
+class PromoCodeForm(forms.Form):
+    promocode = forms.CharField(max_length=20)
