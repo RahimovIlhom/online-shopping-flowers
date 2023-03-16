@@ -98,6 +98,8 @@ class Order(models.Model):
     order_completed_date = models.DateTimeField(null=True, blank=True)
     billingAddress = models.ForeignKey('BillingAddress', on_delete=models.SET_NULL, blank=True, null=True)
     payment = models.ForeignKey('Payment', on_delete=models.SET_NULL, blank=True, null=True)
+    promo_code_text = models.CharField(max_length=20, blank=True, null=True)
+    promocode = models.ForeignKey('PromoCode', on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return f'{self.user}'
@@ -106,6 +108,12 @@ class Order(models.Model):
         total = 0
         for order_product in self.products.all():
             total += order_product.get_final_price()
+        promo_code = self.promocode
+        if promo_code:
+            if promo_code.discount_cash:
+                total -= promo_code.discount_cash
+            elif promo_code.discount_interest:
+                total *= (100-promo_code.discount_interest) / 100
         return total
 
 class BillingAddress(models.Model):

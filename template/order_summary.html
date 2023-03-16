@@ -51,7 +51,7 @@
       <th scope="row">{{ forloop.counter }}</th>
       <th><a class="text-link active" href="{% url 'product' order_product.product.id %} ">{{ order_product.product.name }}</a></th>
       {% if order_product.product.discount_price %}
-        <td>{{ order_product.product.discount_price }}$</td>
+        <td>{{ order_product.product.price }}$</td>
         <td>
           <a href="{% url 'remove-flower-from-card' order_product.product.id %}"><i class="fas fa-minus mr-2"></i> </a>
           {{ order_product.quantity }}
