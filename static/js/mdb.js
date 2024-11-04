@@ -15978,7 +15978,6 @@ var _this = void 0;
   return bsCustomFileInput;
 
 }));
-//# sourceMappingURL=bs-custom-file-input.js.map
 
 document.addEventListener("DOMContentLoaded", function () {
 
