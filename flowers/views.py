@@ -27,7 +27,7 @@ def redirect_login(request):
 
 def flowers_list(request, id, page):
     if id == 0:
-        flowers = Product.objects.all()
+        flowers = Product.objects.all().order_by('-id')
         paginator = Paginator(flowers, per_page=8)
         page_object = paginator.get_page(page)
         page_max_number = paginator.num_pages
