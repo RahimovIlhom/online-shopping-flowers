@@ -36,6 +36,7 @@ SESSION_COOKIE_SECURE = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 CSRF_TRUSTED_ORIGINS = [
+    'https://*.django-admin.uz',
     'https://shopping.up.railway.app/',
     'http://127.0.0.1:8000/'
 ]
